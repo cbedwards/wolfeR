@@ -75,7 +75,7 @@ overlapped with the first, there is no guarantee that any of the colors
 match up between our two plots (even though we would want the two
 overlapping species to use the same colors).
 
-Here’s what the time series would look like for our simulated data:
+Here’s what the time series looks like for our simulated data:
 
 ``` r
 ggplot(data = dat, aes(x = day,
