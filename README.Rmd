@@ -9,7 +9,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%",
   fig.width=10,
   fig.height=10
 )
@@ -27,7 +26,7 @@ library(wolfeR)
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of wolfeR is to streamline consistent color schemes for plots of the microbes used in the Wolfe lab at Tufts
+The goal of wolfeR is to streamline  color schemes for plots of the microbes used in the Wolfe lab at Tufts.
 
 ## Installation
 
@@ -65,7 +64,7 @@ dat$count = 500 + #baseline
 
 ggplot figures default to a single color scheme, which (a) doesn't match Wolfe lab publications, but also (b) is based on the data given. So if we make a plot for one experiment in which we had four species, and another plot for a second experiment with four species, two of which overlapped with the first, there is no guarantee that any of the colors match up between our two plots (even though we would want the two overlapping species to use the same colors).
 
-Here's what the time series would look like for our simulated data:
+Here's what the time series looks like for our simulated data: 
 
 ```{r}
 ggplot(data = dat, aes(x = day,

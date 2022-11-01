@@ -20,8 +20,8 @@ library(wolfeR)
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of wolfeR is to streamline consistent color schemes for plots
-of the microbes used in the Wolfe lab at Tufts
+The goal of wolfeR is to streamline color schemes for plots of the
+microbes used in the Wolfe lab at Tufts.
 
 ## Installation
 
@@ -88,7 +88,7 @@ ggplot(data = dat, aes(x = day,
   ggtitle("Simulated time series, 3 replicates per species")
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
 
 And here’s what the barplots of that same data would look like,
 averaging across replicates and separated across days with
@@ -108,7 +108,7 @@ ggplot(data = dat.summary,
   ggtitle("Simulated summary data, separated by day of experiment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
 
 ### Using wolfeR for colors
 
@@ -121,7 +121,7 @@ is implemented. We can try visualizing a palette with `palette_vis()`.
 palette_vis("wolfe2014")
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-6-1.png)<!-- -->
 
 With the palette in mind, we should check that our data doesn’t have any
 taxa / names that aren’t present in the color palette. `palette_check()`
@@ -209,7 +209,7 @@ ggplot(data = dat, aes(x = day,
   ggtitle("Simulated time series, 3 replicates per species")
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 ggplot(data = dat.summary,
@@ -221,7 +221,7 @@ ggplot(data = dat.summary,
   ggtitle("Simulated summary data, separated by day of experiment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-10-1.png)<!-- -->
 
 TECHNICAL NOTE: these two functions are mostly just wrappers for
 `scale_fill_discrete()` and `scale_color_discrete()`, and so can be
