@@ -217,7 +217,7 @@ ggplot(data = dat.summary,
   geom_col()+
   facet_wrap(~ day)+
   xlab("")+
-  scale_color_wolfe(dat.names = dat$name, palette.name = "wolfe2014")+
+  scale_fill_wolfe(dat.names = dat$name, palette.name = "wolfe2014")+
   ggtitle("Simulated summary data, separated by day of experiment")
 ```
 
