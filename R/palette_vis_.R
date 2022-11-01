@@ -20,5 +20,12 @@ palette_vis_ = function(color.vec){
   ggplot(data = dat.plot, aes(x = x, y = y, fill = name))+
     geom_tile()+
     scale_fill_discrete(type = color.vec)+
-    geom_text(aes(label = name))
+    geom_text(aes(label = name))+
+    xlab("")+
+    ylab("")+
+    theme(panel.background = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text = element_blank())
 }

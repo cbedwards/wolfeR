@@ -4,12 +4,14 @@
 \alias{scale_color_wolfe}
 \title{Using wolfeR color palettes in ggplot}
 \usage{
-scale_color_wolfe(dat.names, palette.name = "wolfe2014")
+scale_color_wolfe(dat.names, palette.name = "wolfe2014", augment = NULL)
 }
 \arguments{
 \item{dat.names}{vector of the taxa names or other identifiers from the data}
 
 \item{palette.name}{Name of color palette used, defaults to wolfe2014. See \code{make_colorvec.R} for details.}
+
+\item{augment}{Optional data frame to account for taxa that are not in the palette. One column is named "name" and contains taxa names (or whatever identifier is used). Other column is named "color" and has the corresponding colors. \code{palette_augment_helper()} can assist in identifying missing colors and other issues.}
 }
 \value{
 a layer for ggplots to specify either the colors used in fill or
@@ -21,7 +23,7 @@ scale_color_wolfe is a wrapper for scale_color_discrete, and can be added to a g
 \details{
 Note that presently these functions are somewhat fragile, and won't handle data well unless the entirety of the taxa are represented in
 the palette (and spelled/capitalized identically). Use \code{palette_check()} to check whether this is the case
-and identify mismatches. In development: a function to easily augment existing color palettes.
+and identify mismatches. Use the optional \code{augment} argument to handle taxa not in the chosen palette; \code{palette_augment_helper()} streamlines the development of your augmentary data frame.
 
 Note that these functions are designed with a character vector in mind, rather than factors.
 If they don't seem to be working, make sure your species names aren't factors (\code{as.character()} is your friend here).

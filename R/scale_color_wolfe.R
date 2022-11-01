@@ -5,13 +5,14 @@
 #'
 #' @details Note that presently these functions are somewhat fragile, and won't handle data well unless the entirety of the taxa are represented in
 #' the palette (and spelled/capitalized identically). Use `palette_check()` to check whether this is the case
-#' and identify mismatches. In development: a function to easily augment existing color palettes.
+#' and identify mismatches. Use the optional `augment` argument to handle taxa not in the chosen palette; `palette_augment_helper()` streamlines the development of your augmentary data frame.
 #'
 #' Note that these functions are designed with a character vector in mind, rather than factors.
 #' If they don't seem to be working, make sure your species names aren't factors (`as.character()` is your friend here).
 #'
 #' @param dat.names vector of the taxa names or other identifiers from the data
 #' @param palette.name Name of color palette used, defaults to wolfe2014. See `make_colorvec.R` for details.
+#' @param augment Optional data frame to account for taxa that are not in the palette. One column is named "name" and contains taxa names (or whatever identifier is used). Other column is named "color" and has the corresponding colors. `palette_augment_helper()` can assist in identifying missing colors and other issues.
 #'
 #' @return a layer for ggplots to specify either the colors used in fill or
 #' @import ggplot2
@@ -62,9 +63,28 @@
 #'   ggtitle("Simulated summary data, separated by day of experiment")
 
 
-scale_color_wolfe = function(dat.names, palette.name = "wolfe2014"){
+scale_color_wolfe = function(dat.names,
+                             palette.name = "wolfe2014",
+                             augment = NULL){
   stopifnot(is.character(dat.names))
   col.vec = make_colorvec()
+  col.vec = col.vec[names(col.vec) %in% dat.names]
+  if(!is.null(augment)){
+    status.good = palette_augment_helper(dat.names = dat.names,
+                                         palette.name = palette.name,
+                                         augment = augment,
+                                         spellcheck = FALSE,
+                                         plot.palette = FALSE,
+                                         verbose = FALSE
+    )
+    if(status.good){
+      new.vec = augment$color
+      names(new.vec) = augment$name
+      col.vec = c(col.vec, new.vec)
+    }else{
+      cat("Augment fails check. Not adding until fixed")
+    }
+  }
   col.vec = col.vec[names(col.vec) %in% dat.names]
   scale_color_discrete(type = col.vec)
 }

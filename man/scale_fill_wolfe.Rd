@@ -4,12 +4,14 @@
 \alias{scale_fill_wolfe}
 \title{Using wolfeR color palettes in ggplot}
 \usage{
-scale_fill_wolfe(dat.names, palette.name = "wolfe2014")
+scale_fill_wolfe(dat.names, palette.name = "wolfe2014", augment = NULL)
 }
 \arguments{
 \item{dat.names}{vector of the taxa names or other identifiers from the data}
 
 \item{palette.name}{Name of color palette used, defaults to wolfe2014. See \code{make_colorvec.R} for details.}
+
+\item{augment}{Optional data frame to account for taxa that are not in the palette. One column is named "name" and contains taxa names (or whatever identifier is used). Other column is named "color" and has the corresponding colors. \code{palette_augment_helper()} can assist in identifying missing colors and other issues.}
 }
 \value{
 a layer for ggplots to specify either the colors used in fill or
@@ -35,10 +37,12 @@ dat = as.data.frame(expand.grid(name = c("candida", "vibrio", "brachybacterium")
                                 rep = 1:3,#replicate number
                                 stringsAsFactors = FALSE))
 dat$count = 500 + #baseline
-  100000 * (dat$day>1) +  #population generally gets near carrying capacity after first measurement
+  100000 * (dat$day>1) +  #population generally gets near carrying
+  #  capacity after first measurement
   (dat$day>1) * -20000*(dat$name == "candida") +#make candida CC lower
   (dat$day>1) *  30000*(dat$name == "vibrio") + #make vibrio CC higher
-  (dat$day>1) * runif(nrow(dat), min = -20000, max = 20000) #add some random noise to observations except day 1
+  (dat$day>1) * runif(nrow(dat), min = -20000, max = 20000)
+  # add some random noise to observations except day 1
 # check the palette
 palette_check(dat$name, "wolfe2014")
 #plot the timeseries

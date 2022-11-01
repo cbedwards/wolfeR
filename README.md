@@ -229,6 +229,109 @@ TECHNICAL NOTE: these two functions are mostly just wrappers for
 treated just like any other ggplot layer, including adding to existing
 objects, etc.
 
+## What if I’m working with some new taxa but still want to use a palette for the remaining taxa?
+
+`scale_fill_discrete()` and `scale_color_discrete()` both have an
+optional argument, `augment`, that allows you to provide a data frame
+with the new taxa and corresponding colors. As this is likely to be a
+somewhat iterative process (checking to see if you have all the taxa
+represented, adding a new taxa, checking again),
+`palette_augment_helper()` assists in testing your augments to see if
+they are sufficient or if there are redundancies between them and the
+palette. For the iterative process, you will want to specify the list of
+names in the data, provide the augment data frame (if you have it, but
+if you’re just starting you can not specify it, and the function will
+list the missing colors), and provide the palette name. If you find you
+don’t want the plot of the augmented palette with each iteration, or
+don’t want the list of all taxa already covered in the palette, you can
+set `plot.palette = FALSE` and `spellcheck = FALSE`.
+
+Here’s an example, with some simple fake data that includes taxa present
+in the “wolfe2014” palette, and new taxa
+
+``` r
+# set up example data. here we only care about the column with our names that
+# we want to base our colors off of
+dat = data.frame(spec = c("arthrobacter",
+                          "yaniella",
+                          "vibrio",
+                          "asclepias",
+                          "drosophila"),
+                 vals = rnorm(5))
+
+## first attempt at our augment:
+aug = data.frame(name = c("asclepias", "vibrio"),
+                 color = c("coral", "blue"))
+
+palette_augment_helper(dat.names=dat$spec,
+                       palette.name = "wolfe2014",
+                       augment = aug)
+#> We have a conflict in names between the palette
+#>  and the proposed augmentations! Duplicated names:
+#> vibrio
+#> 
+#> We are missing colors for the following names:
+#> drosophila
+#> 
+#> We have the following names already (check spelling mismatches!):
+#> acremonium
+#> arthrobacter
+#> asclepias
+#> aspergillus
+#> brachybacterium
+#> brevibacterium
+#> candida
+#> chrysosporium
+#> corynebacterium
+#> debaryomyces
+#> fusarium
+#> galactomyces
+#> hafnia
+#> halomonas
+#> missing
+#> nocardiopsis
+#> penicillium
+#> pseudoalteromonas
+#> pseudomonas
+#> psychobacter
+#> scopulariopsis
+#> serratia
+#> sphingobacterium
+#> sporendonema
+#> staphylococcus
+#> vibrio
+#> vibrio
+#> yaniella
+```
+
+![](man/figures/README-unnamed-chunk-11-1.png)<!-- -->
+
+    #> [1] FALSE
+    ## oops! Palette already has vibrio! And we're missing drosophila
+
+    aug = data.frame(name = c("asclepias", "drosophila"),
+                     color = c("coral", "purple"))
+
+    palette_augment_helper(dat.names=dat$spec,
+                           palette.name = "wolfe2014",
+                           augment = aug)
+
+![](man/figures/README-unnamed-chunk-11-2.png)<!-- -->
+
+    #> Everything looks good!
+    #> Augment plus palette span all observed names, no duplicated names in augment, no duplicated names between augment and palette.
+    #> Ready for use! Nice work!
+    #> [1] TRUE
+    ## Looks like we're good!
+
+    ggplot(dat, aes(x = spec, y = vals, fill = spec))+
+      geom_col()+
+      scale_fill_wolfe(dat$spec,
+                       palette.name = "wolfe2014",
+                       augment = aug)
+
+![](man/figures/README-unnamed-chunk-11-3.png)<!-- -->
+
 ## adding new color palettes
 
 It is very easy for me to add new color palettes to the package if I’m
@@ -238,7 +341,9 @@ character strings for R colors, or in hex code (the format that starts
 with a \# sign.. I found that [this site](https://colors.artyclick.com/)
 was handy for extracting colors from publications.
 
-I’m working on developing a function to augment existing palettes
-without requiring me updating the package (so that you can work with the
-existing palettes and some new taxa without waiting for me), but that is
-not yet ready.
+If you’re developing a palette from scratch for your data set, the
+palette_augment_helper() function can again be helpful. If you don’t
+give it a `palette.name` argument, it just compares the augment to the
+data and identifies missing colors (plus plots the color scheme of the
+augment). I find this helpful for iteratively building a new palette for
+my data.

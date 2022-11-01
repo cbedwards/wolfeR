@@ -12,6 +12,7 @@
 #'
 #' @param dat.names vector of the taxa names or other identifiers from the data
 #' @param palette.name Name of color palette used, defaults to wolfe2014. See `make_colorvec.R` for details.
+#' @param augment Optional data frame to account for taxa that are not in the palette. One column is named "name" and contains taxa names (or whatever identifier is used). Other column is named "color" and has the corresponding colors. `palette_augment_helper()` can assist in identifying missing colors and other issues.
 #'
 #' @return a layer for ggplots to specify either the colors used in fill or
 #' @import ggplot2
@@ -26,10 +27,12 @@
 #'                                 rep = 1:3,#replicate number
 #'                                 stringsAsFactors = FALSE))
 #' dat$count = 500 + #baseline
-#'   100000 * (dat$day>1) +  #population generally gets near carrying capacity after first measurement
+#'   100000 * (dat$day>1) +  #population generally gets near carrying
+#'   #  capacity after first measurement
 #'   (dat$day>1) * -20000*(dat$name == "candida") +#make candida CC lower
 #'   (dat$day>1) *  30000*(dat$name == "vibrio") + #make vibrio CC higher
-#'   (dat$day>1) * runif(nrow(dat), min = -20000, max = 20000) #add some random noise to observations except day 1
+#'   (dat$day>1) * runif(nrow(dat), min = -20000, max = 20000)
+#'   # add some random noise to observations except day 1
 #' # check the palette
 #' palette_check(dat$name, "wolfe2014")
 #' #plot the timeseries
@@ -59,16 +62,28 @@
 #'   ggtitle("Simulated summary data, separated by day of experiment")
 
 
-scale_fill_wolfe = function(dat.names, palette.name = "wolfe2014"){
+scale_fill_wolfe = function(dat.names,
+                            palette.name = "wolfe2014",
+                            augment = NULL){
   stopifnot(is.character(dat.names))
   col.vec = make_colorvec()
+  if(!is.null(augment)){
+    status.good = palette_augment_helper(dat.names = dat.names,
+                           palette.name = palette.name,
+                           augment = augment,
+                           spellcheck = FALSE,
+                           plot.palette = FALSE,
+                           verbose = FALSE
+                           )
+    if(status.good){
+      new.vec = augment$color
+      names(new.vec) = augment$name
+      col.vec = c(col.vec, new.vec)
+    }else{
+      cat("Augment fails check. Not adding until fixed")
+    }
+  }
   col.vec = col.vec[names(col.vec) %in% dat.names]
   scale_fill_discrete(type = col.vec)
 }
 
-scale_color_wolfe = function(dat.names, palette.name = "wolfe2014"){
-  stopifnot(is.character(dat.names))
-  col.vec = make_colorvec()
-  col.vec = col.vec[names(col.vec) %in% dat.names]
-  scale_color_discrete(type = col.vec)
-}
