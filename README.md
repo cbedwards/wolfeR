@@ -218,7 +218,7 @@ ggplot(data = dat.summary,
   facet_wrap(~ day)+
   xlab("")+
   scale_fill_wolfe(dat.names = dat$name, palette.name = "wolfe2014")+
-  ggtitle("Simulated summary data, separated by day of experiment")
+  ggtitle("Simulated summary data (by day of experiment)")
 ```
 
 ![](man/figures/README-unnamed-chunk-10-1.png)<!-- -->
