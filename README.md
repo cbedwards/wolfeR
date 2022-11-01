@@ -115,7 +115,7 @@ ggplot(data = dat.summary,
 First, we need to choose which color palette we want. See
 `help("make_colorvec")` for details; as of the writing of this README,
 only the color scheme based on Wolfe 2014 (`palette.name = "wolfe2014"`)
-is implemented. We can try visualizing a palette with `palette_vis()`.
+is implemented. We can visualize a palette with `palette_vis()`.
 
 ``` r
 ## showing the default palette

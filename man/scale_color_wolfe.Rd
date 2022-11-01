@@ -30,15 +30,18 @@ If they don't seem to be working, make sure your species names aren't factors (\
 library(ggplot2)
 library(dplyr)
 #generate simulated data akin to wolfe lab data for examples
-dat = as.data.frame(expand.grid(name = c("candida", "vibrio", "brachybacterium"), #species name
+dat = as.data.frame(expand.grid(name = c("candida", "vibrio",
+                                  "brachybacterium"), #species name
                                 day = c(1, 3, 7, 14, 21), #day of time series
                                 rep = 1:3,#replicate number
                                 stringsAsFactors = FALSE))
 dat$count = 500 + #baseline
-  100000 * (dat$day>1) +  #population generally gets near carrying capacity after first measurement
+  100000 * (dat$day>1) +  #population generally gets near carrying capacity
+  #  after first measurement
   (dat$day>1) * -20000*(dat$name == "candida") +#make candida CC lower
   (dat$day>1) *  30000*(dat$name == "vibrio") + #make vibrio CC higher
-  (dat$day>1) * runif(nrow(dat), min = -20000, max = 20000) #add some random noise to observations except day 1
+  (dat$day>1) * runif(nrow(dat), min = -20000, max = 20000)
+  # add some random noise to observations except day 1
 # check the palette
 palette_check(dat$name, "wolfe2014")
 #plot the timeseries
