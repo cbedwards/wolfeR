@@ -118,6 +118,7 @@ only the color scheme based on Wolfe 2014 (`palette.name = "wolfe2014"`)
 is implemented. We can try visualizing a palette with `palette_vis()`.
 
 ``` r
+## showing the default palette
 palette_vis("wolfe2014")
 ```
 
